@@ -1,0 +1,92 @@
+<div  *ngIf="showLogin" class="LOGIN">
+    <form (submit)="login()">
+      <h1>Login</h1>
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" placeholder="Enter Email" [(ngModel)]="loginData.email" >
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter Password" [(ngModel)]="loginData.password" >
+
+      <button type="submit">Login</button>
+      <button type="button" (click)="showRegistrationForm()">Register</button>
+    </form> 
+</div>
+<div *ngIf="showReg" class="SIGNUP"> 
+    <form (submit)="register()" *ngIf="!editingUser">
+      <h1>{{ editingUser ? 'Edit User' : 'Registration' }}</h1>
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName"  placeholder="First Name" [(ngModel)]="user.firstName" >
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" placeholder="Last Name" [(ngModel)]="user.lastName" >
+
+      <label for="email">Email ID:</label>
+      <input type="email" id="email" name="email" placeholder="Email" [(ngModel)]="user.email" >
+
+      <label for="address">Address:</label>
+      <input type="text" id="address" name="address" placeholder="Address" [(ngModel)]="user.address" >
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="user.password" >
+      
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="user.confirmPassword" >
+
+      <button type="submit">Register</button>
+      <button type="button" (click)="showLoginForm()">Cancel</button>
+    </form>
+
+    <form *ngIf="editingUser" (submit)="updateUser()">
+      <h1>{{ editingUser ? 'Edit User' : 'Registration' }}</h1>
+      <label for="editFirstName">First Name:</label>
+      <input type="text" id="editFirstName" name="editFirstName" [(ngModel)]="firstName">
+
+      <label for="editLastName">Last Name:</label>
+      <input type="text" id="editLastName" name="editLastName" [(ngModel)]="lastName">
+
+      <label for="editEmail">Email ID:</label>
+      <input type="email" id="editEmail" name="editEmail" [(ngModel)]="email" [readonly]="true">
+
+      <label for="editAddress">Address:</label>
+      <input type="text" id="editAddress" name="editAddress" [(ngModel)]="address">
+
+      <button type="submit">Update</button>
+      <button type="button" (click)="showLoginForm()">Cancel</button>
+    </form>
+</div>
+<div *ngIf="!showLogin && !showReg" class="TABLE">
+    <h2>User Table <span> <button (click)="logout()">Logout</button></span></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userDB">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.address }}</td>
+          <td>
+            <button (click)="viewUser(user)">View</button>
+            <button (click)="editUser(user)">Edit</button>
+            <button (click)="deleteUser(user)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+<!-- Display user details when selected -->
+<div class="view-container" *ngIf="selectedUser">
+  <span class="close-button" (click)="selectedUser=null">&times;</span>
+  <h2>User Details</h2>
+  <p>First Name: {{ selectedUser.firstName }}</p>
+  <p>Last Name: {{ selectedUser.lastName }}</p>
+  <p>Email: {{ selectedUser.email }}</p>
+  <p>Address: {{ selectedUser.address }}</p>
+</div>
